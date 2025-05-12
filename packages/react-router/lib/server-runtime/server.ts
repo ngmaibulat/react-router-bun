@@ -94,6 +94,11 @@ export const createRequestHandler: CreateRequestHandlerFunction = (
   let staticHandler: StaticHandler;
   let errorHandler: HandleErrorFunction;
 
+  if (typeof build === "object" && !build.routeDiscovery) {
+      const routeDiscovery = { mode: "lazy" as "lazy", manifestPath: "/__manifest" }
+      build = {...build, routeDiscovery};
+  }
+
   return async function requestHandler(request, initialContext) {
     _build = typeof build === "function" ? await build() : build;
 
